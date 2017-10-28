@@ -1,6 +1,21 @@
 <?php
 
+	require('config/config.php');
+	include('session.php');
+
+	$sql = "SELECT * FROM userinfo ORDER BY name ASC ";
+
+	$result = mysqli_query($conn,$sql);
+
+	$info = mysqli_fetch_all($result,MYSQLI_ASSOC);
+
+	mysqli_free_result($result);
+
+	mysqli_close($conn);
+
+
 ?>
+
 
 
 <!DOCTYPE html>
@@ -31,6 +46,10 @@
 	      <ul class="nav navbar-nav">
 	        <li class="active"><a href="<?php echo ROOT ; ?>">Home <span class="sr-only">(current)</span></a></li>
 	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	      	<li><a href="#">Welcome <?php echo $login_session; ?> !</a></li>
+	        <li><a href="logout.php">Logout</a></li>
+	      	</ul>
 	    </div>
 
 	    
@@ -42,36 +61,31 @@
 <section name="Content">
 	
 	<div class="container">
-		<div class="well well-lg">
+		<h1>Status</h1>
+		<table class="table table-striped table-hover ">
+			<thead>
+			    <tr>
+			      <th>No</th>
+			      <th>Name</th>
+			      <th>Amount(RM)</th>
+			      <th>Action</th>
+			    </tr>
+		  	</thead>
+			  <tbody>
+			  	<?php foreach($info as $i) : ?>
+			    <tr>
+			    	<td><?php echo $i['id'] ; ?></td>
+			    	<td><?php echo $i['name'] ; ?></td>
+			    	<td><?php echo $i['amount'] ; ?></td>
+			    	<td><a href="edit.php?id=<?php echo $i['id'] ; ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>	</a></td>
+			    </tr>	
+			    <?php endforeach ; ?>
+			  </tbody>
+		</table>
 
-			<h1 align="center">Login</h1>
-			<form action="login.php" method="POST" class="form-horizontal">
-				<div class="form-group" >
-			      <label for="inputUsername" class="col-lg-2 control-label">Username</label>
-			      <div class="col-lg-6">
-			        <input type="text" class="form-control" name="username" id="inputUsername" placeholder="Username">
-			      </div>
-			    </div>
-
-			    <div class="form-group">
-			      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-			      <div class="col-lg-6">
-			        <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password">
-			      </div>
-			    </div>
-
-				<div class="form-group">
-			      <div class="col-lg-10 col-lg-offset-2">
-			        <button type="submit" class="btn btn-info">Submit</button>
-			      </div>
-			    </div>
-
-
-			</form>		    
-		</div>
 	</div>
 
 </section>
-	
+
 </body>
 </html>

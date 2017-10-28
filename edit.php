@@ -1,6 +1,7 @@
 <?php
 
 	require('config/config.php');
+	include('session.php');
 
 	if(isset($_POST['calculate'])){
 		$update_id = mysqli_real_escape_string($conn,$_POST['update_id']);
